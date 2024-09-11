@@ -42,10 +42,11 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions web = FirebaseOptions(
     apiKey: 'AIzaSyCCZIHSQd4-vGkQ58MSRAm0Jt_ysS3TCgw',
-    appId: '1:293905643672:web:a9721aa7a79b12ab0078ed',
+    appId: '1:293905643672:web:e7ad9a39e34d71d70078ed',
     messagingSenderId: '293905643672',
     projectId: 'covid-detection-9c949',
     authDomain: 'covid-detection-9c949.firebaseapp.com',
+    databaseURL: 'https://covid-detection-9c949-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'covid-detection-9c949.appspot.com',
   );
 
@@ -54,6 +55,7 @@ class DefaultFirebaseOptions {
     appId: '1:293905643672:android:3a604b31bbacedd30078ed',
     messagingSenderId: '293905643672',
     projectId: 'covid-detection-9c949',
+    databaseURL: 'https://covid-detection-9c949-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'covid-detection-9c949.appspot.com',
   );
 
@@ -62,7 +64,9 @@ class DefaultFirebaseOptions {
     appId: '1:293905643672:ios:3ae5359aac46f8560078ed',
     messagingSenderId: '293905643672',
     projectId: 'covid-detection-9c949',
+    databaseURL: 'https://covid-detection-9c949-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'covid-detection-9c949.appspot.com',
+    androidClientId: '293905643672-s2feqtsae43lbd97vn9q1g7n0k94iapc.apps.googleusercontent.com',
     iosClientId: '293905643672-ovk1i6noe0oqqpv5or2n63a7b6mp5ggh.apps.googleusercontent.com',
     iosBundleId: 'com.example.covidDetection',
   );
@@ -72,7 +76,9 @@ class DefaultFirebaseOptions {
     appId: '1:293905643672:ios:3ae5359aac46f8560078ed',
     messagingSenderId: '293905643672',
     projectId: 'covid-detection-9c949',
+    databaseURL: 'https://covid-detection-9c949-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'covid-detection-9c949.appspot.com',
+    androidClientId: '293905643672-s2feqtsae43lbd97vn9q1g7n0k94iapc.apps.googleusercontent.com',
     iosClientId: '293905643672-ovk1i6noe0oqqpv5or2n63a7b6mp5ggh.apps.googleusercontent.com',
     iosBundleId: 'com.example.covidDetection',
   );
@@ -83,6 +89,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '293905643672',
     projectId: 'covid-detection-9c949',
     authDomain: 'covid-detection-9c949.firebaseapp.com',
+    databaseURL: 'https://covid-detection-9c949-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'covid-detection-9c949.appspot.com',
   );
+
 }

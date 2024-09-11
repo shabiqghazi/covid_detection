@@ -1,6 +1,7 @@
 import 'package:covid_detection/firebase_options.dart';
 import 'package:covid_detection/pages/home.dart';
 import 'package:covid_detection/pages/login.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -28,18 +29,29 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        textTheme: const TextTheme(
-          bodyMedium:
-              TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
-        ),
-        primarySwatch: Colors.teal,
-      ),
       routes: {
         '/': (context) => Login(),
         '/home': (context) => Home(),
       },
       initialRoute: '/',
+    );
+  }
+}
+
+class AuthWrapper extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<User?>(
+      stream: FirebaseAuth.instance.authStateChanges(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const CircularProgressIndicator();
+        } else if (snapshot.hasData) {
+          return Home();
+        } else {
+          return Login();
+        }
+      },
     );
   }
 }

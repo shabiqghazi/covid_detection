@@ -26,12 +26,9 @@ class _LoginState extends State<Login> {
       final UserCredential userCredential =
           await _auth.signInWithCredential(credential);
 
-      print("userYoss");
-      print(userCredential.user);
       return userCredential.user;
     } catch (e) {
-      print("hallo");
-      print("wkwkwk $e");
+      print('wkwkwkwk ${e}');
       return null;
     }
   }
