@@ -29,16 +29,18 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      home: const AuthWrapper(),
       routes: {
-        '/': (context) => Login(),
-        '/home': (context) => Home(),
+        '/home': (context) => const Home(),
+        '/login': (context) => Login(),
       },
-      initialRoute: '/',
     );
   }
 }
 
 class AuthWrapper extends StatelessWidget {
+  const AuthWrapper({super.key});
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<User?>(
@@ -47,7 +49,7 @@ class AuthWrapper extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const CircularProgressIndicator();
         } else if (snapshot.hasData) {
-          return Home();
+          return const Home();
         } else {
           return Login();
         }
