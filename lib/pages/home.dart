@@ -1,8 +1,10 @@
 import 'dart:async';
-import 'package:covid_detection/auth_services.dart';
+import 'package:covid_detection/models/user_model.dart';
+import 'package:covid_detection/services/auth_services.dart';
 import 'package:covid_detection/pages/bantuan.dart';
 import 'package:covid_detection/pages/cara_kerja.dart';
 import 'package:covid_detection/pages/riwayat.dart';
+import 'package:covid_detection/services/user_services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -17,13 +19,23 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   final AuthServices _authServices = AuthServices();
-  User? user = FirebaseAuth.instance.currentUser;
+  final UserServices userServices = UserServices();
+  User? userAccount = FirebaseAuth.instance.currentUser;
+  UserModel? user = UserModel();
   Position? _currentPosition;
 
   @override
   void initState() {
+    fetchUser();
     _requestPermissions();
     super.initState();
+  }
+
+  Future<void> fetchUser() async {
+    UserModel? fetchUser = await userServices.getUserByUid(userAccount!.uid);
+    setState(() {
+      user = fetchUser;
+    });
   }
 
   // Meminta izin akses mikrofon
@@ -68,8 +80,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     );
 
     if (confirmed == true) {
-      await _authServices.signOut();
-      Navigator.pushReplacementNamed(context, '/login');
+      if (!context.mounted) return;
+      await _authServices.signOut(context);
     }
   }
 
@@ -98,7 +110,11 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
           appBar: AppBar(
             backgroundColor: Colors.teal,
             title: Text(
-              user != null ? 'Halo, ${user!.displayName}' : 'Hello, User!',
+              user?.name?.isNotEmpty == true
+                  ? 'Halo, ${user!.name}!'
+                  : userAccount?.displayName != null
+                      ? 'Halo, ${userAccount!.displayName}!'
+                      : 'Halo, ',
               style: const TextStyle(
                 fontWeight: FontWeight.w500,
                 fontSize: 15,
@@ -144,11 +160,11 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                       ),
                     ];
                   },
-                  child: user != null
+                  child: userAccount!.photoURL != null
                       ? ClipRRect(
                           borderRadius: BorderRadius.circular(50),
                           child: Image.network(
-                            user!.photoURL!,
+                            userAccount!.photoURL!,
                             width: 30,
                           ),
                         )

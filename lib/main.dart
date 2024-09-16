@@ -1,6 +1,7 @@
 import 'package:covid_detection/firebase_options.dart';
+import 'package:covid_detection/pages/daftar.dart';
 import 'package:covid_detection/pages/home.dart';
-import 'package:covid_detection/pages/login.dart';
+import 'package:covid_detection/pages/loginn.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +33,8 @@ class MyApp extends StatelessWidget {
       home: const AuthWrapper(),
       routes: {
         '/home': (context) => const Home(),
-        '/login': (context) => Login(),
+        '/login': (context) => const Loginn(),
+        '/daftar': (context) => const Daftar(),
       },
     );
   }
@@ -51,7 +53,7 @@ class AuthWrapper extends StatelessWidget {
         } else if (snapshot.hasData) {
           return const Home();
         } else {
-          return Login();
+          return const Loginn();
         }
       },
     );

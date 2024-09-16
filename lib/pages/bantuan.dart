@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:covid_detection/hospital_map_service.dart';
+import 'package:covid_detection/services/hospital_map_service.dart';
 import 'package:covid_detection/pages/map.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
