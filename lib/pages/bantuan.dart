@@ -14,7 +14,6 @@ class Bantuan extends StatefulWidget {
 
 class _BantuanState extends State<Bantuan> {
   List<dynamic> _hospitals = [];
-  bool _isLoading = true;
 
   @override
   void initState() {
@@ -27,14 +26,10 @@ class _BantuanState extends State<Bantuan> {
       HospitalServices().getDocs(widget.currentPosition).then((hospitals) {
         setState(() {
           _hospitals = hospitals;
-          _isLoading = false;
         });
       });
     } catch (e) {
       print("Error fetching data: $e");
-      setState(() {
-        _isLoading = false;
-      });
     }
   }
 

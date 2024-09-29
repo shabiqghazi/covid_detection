@@ -2,14 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class HospitalServices {
   Future<List<dynamic>> getDocs(GeoPoint currentLocation) async {
-    final distance = 0.5;
+    // final distance = 0.5;
 
-    final double lowerLat = currentLocation.latitude - distance;
-    final double lowerLon = currentLocation.longitude - distance;
-    final double greaterLat = currentLocation.latitude + distance;
-    final double greaterLon = currentLocation.longitude + distance;
-    final lesserGeopoint = GeoPoint(lowerLat, lowerLon);
-    final greaterGeopoint = GeoPoint(greaterLat, greaterLon);
+    // final double lowerLat = currentLocation.latitude - distance;
+    // final double lowerLon = currentLocation.longitude - distance;
+    // final double greaterLat = currentLocation.latitude + distance;
+    // final double greaterLon = currentLocation.longitude + distance;
+    // final lesserGeopoint = GeoPoint(lowerLat, lowerLon);
+    // final greaterGeopoint = GeoPoint(greaterLat, greaterLon);
     try {
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
           .collection('users')
