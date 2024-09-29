@@ -1,13 +1,5 @@
 class UserModel {
-  final String? name,
-      email,
-      phone,
-      address,
-      birthDate,
-      geoPoint,
-      gender,
-      role,
-      createdAt;
+  final String? name, email, phone, address, birthDate, gender, role, createdAt;
 
   UserModel({
     this.name,
@@ -15,7 +7,6 @@ class UserModel {
     this.phone,
     this.address,
     this.birthDate,
-    this.geoPoint,
     this.gender,
     this.role,
     this.createdAt,
@@ -28,7 +19,6 @@ class UserModel {
       'phone': phone,
       'address': address,
       'birthDate': birthDate,
-      'geoPoint': geoPoint,
       'gender': gender,
       'role': role,
       'createdAt': createdAt,
@@ -42,7 +32,6 @@ class UserModel {
       phone: json['phone'] as String,
       address: json['address'] as String,
       birthDate: json['birthDate'] as String,
-      geoPoint: json['geoPoint'] as String,
       gender: json['gender'] as String,
       role: json['role'] as String,
       createdAt: json['createdAt'] as String,

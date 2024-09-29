@@ -1,20 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:geolocator/geolocator.dart';
 
-class Hospital {
-  final String? name;
-  final String? address;
-  final GeoPoint? geo_point;
-  final String? role;
-
-  Hospital(
-      {required this.name,
-      required this.address,
-      required this.geo_point,
-      required this.role});
-}
-
-class HospitalMapService {
+class HospitalServices {
   Future<List<dynamic>> getDocs(GeoPoint currentLocation) async {
     final distance = 0.5;
 
@@ -24,23 +10,21 @@ class HospitalMapService {
     final double greaterLon = currentLocation.longitude + distance;
     final lesserGeopoint = GeoPoint(lowerLat, lowerLon);
     final greaterGeopoint = GeoPoint(greaterLat, greaterLon);
-    print(lesserGeopoint.latitude.toString() +
-        ", " +
-        lesserGeopoint.longitude.toString());
-    print(greaterGeopoint.latitude.toString() +
-        ", " +
-        greaterGeopoint.longitude.toString());
     try {
-      print("Attempting to connect to Firestore...");
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
           .collection('users')
           .where('role', isEqualTo: 'hospital')
-          .where('geo_point',
-              isGreaterThan: lesserGeopoint, isLessThan: greaterGeopoint)
+          // .where('geoPoint',
+          //     isGreaterThan: lesserGeopoint, isLessThan: greaterGeopoint)
           .get();
-      print(
-          "Connection successful. Document count: ${querySnapshot.docs.length}");
-      final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
+      final allData = querySnapshot.docs.map((doc) {
+        final String documentId = doc.id;
+        final data = doc.data() as Map<String, dynamic>;
+        return {
+          ...data,
+          'documentId': documentId,
+        };
+      }).toList();
       return allData;
     } catch (e) {
       print("Error connecting to Firestore: $e");

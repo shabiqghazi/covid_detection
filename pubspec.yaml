@@ -11,7 +11,6 @@ dependencies:
   latlong2: ^0.9.0
   flutter:
     sdk: flutter
-  provider: ^6.0.5
   firebase_core: ^3.4.1
   firebase_auth: ^5.2.1
   google_sign_in: ^6.2.1
@@ -25,6 +24,7 @@ dependencies:
   google_fonts: ^6.2.1
   http_parser: ^4.0.2
   cloud_firestore: ^5.4.1
+  audio_waveforms: ^1.0.5
 
 dev_dependencies:
   flutter_test:
@@ -36,3 +36,4 @@ flutter:
   assets:
     - images/mic_permission.jpeg
     - images/loc_permission.jpeg
+    - images/logo.png

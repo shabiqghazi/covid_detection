@@ -1,9 +1,10 @@
 import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:covid_detection/models/user_model.dart';
 import 'package:covid_detection/services/auth_services.dart';
 import 'package:covid_detection/pages/bantuan.dart';
 import 'package:covid_detection/pages/cara_kerja.dart';
-import 'package:covid_detection/pages/riwayat.dart';
+import 'package:covid_detection/pages/history.dart';
 import 'package:covid_detection/services/user_services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -21,18 +22,18 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   final AuthServices _authServices = AuthServices();
   final UserServices userServices = UserServices();
   User? userAccount = FirebaseAuth.instance.currentUser;
-  UserModel? user = UserModel();
-  Position? _currentPosition;
+  UserModel user = UserModel();
+  GeoPoint _currentPosition = const GeoPoint(-7.0, 108.0);
 
   @override
   void initState() {
-    fetchUser();
+    fetchData();
     _requestPermissions();
     super.initState();
   }
 
-  Future<void> fetchUser() async {
-    UserModel? fetchUser = await userServices.getUserByUid(userAccount!.uid);
+  Future<void> fetchData() async {
+    UserModel fetchUser = await userServices.getUserByUid(userAccount!.uid);
     setState(() {
       user = fetchUser;
     });
@@ -92,9 +93,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
         desiredAccuracy: LocationAccuracy.high,
       );
       setState(() {
-        _currentPosition = position;
+        _currentPosition = GeoPoint(position.latitude, position.longitude);
       });
-      print('Posisi saat ini: $_currentPosition');
     } catch (e) {
       print('Gagal mendapatkan lokasi: $e');
     }
@@ -110,8 +110,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
           appBar: AppBar(
             backgroundColor: Colors.teal,
             title: Text(
-              user?.name?.isNotEmpty == true
-                  ? 'Halo, ${user!.name}!'
+              user.name?.isNotEmpty == true
+                  ? 'Halo, ${user.name}!'
                   : userAccount?.displayName != null
                       ? 'Halo, ${userAccount!.displayName}!'
                       : 'Halo, ',
@@ -129,8 +129,11 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                     // Gunakan Future.microtask untuk menangani kode asinkron
                     Future.microtask(() async {
                       if (value == 'profile') {
-                        // Aksi untuk Profile
-                        print('Profile selected');
+                        Navigator.pushNamed(
+                          context,
+                          '/profile',
+                          arguments: user,
+                        );
                       } else if (value == 'logout') {
                         _confirmLogout(context);
                       }
@@ -193,12 +196,14 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
               ],
             ),
           ),
-          body: const SafeArea(
+          body: SafeArea(
             child: TabBarView(
               children: <Widget>[
-                CaraKerja(),
-                Riwayat(),
-                Bantuan(),
+                const CaraKerja(),
+                Riwayat(
+                  userId: userAccount!.uid,
+                ),
+                Bantuan(currentPosition: _currentPosition),
               ],
             ),
           ),
