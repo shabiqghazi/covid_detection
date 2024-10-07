@@ -1,5 +1,6 @@
 class HistoryModel {
-  final String status, createdAt, dimension, size, dispersi, url;
+  final String status, dimension, size, dispersi, url;
+  final DateTime createdAt;
   String? userId, documentId;
 
   HistoryModel({
@@ -42,7 +43,7 @@ class HistoryModel {
     return HistoryModel(
       status: status,
       userId: userId,
-      createdAt: DateTime.now().toString(),
+      createdAt: DateTime.now(),
       dimension: json['dimension'],
       size: json['size'],
       dispersi: json['dispersi'],

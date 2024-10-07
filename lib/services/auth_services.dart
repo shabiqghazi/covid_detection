@@ -42,7 +42,7 @@ class AuthServices {
       return userCredential.user;
     } catch (e) {
       print(e);
-      return null;
+      throw e;
     }
   }
 

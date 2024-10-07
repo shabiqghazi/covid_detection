@@ -7,8 +7,10 @@ class HistoryServices {
   FirebaseFirestore db = FirebaseFirestore.instance;
 
   Future<List<HistoryModel>> getHistories(String userId) async {
-    final docRef =
-        db.collection("histories").where("userId", isEqualTo: userId);
+    final docRef = db
+        .collection("histories")
+        .where("userId", isEqualTo: userId)
+        .orderBy("createdAt");
     QuerySnapshot query = await docRef.get();
     final data = query.docs.map((doc) {
       final String documentId = doc.id;

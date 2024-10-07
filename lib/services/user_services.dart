@@ -7,7 +7,9 @@ class UserServices {
   Future<UserModel> getUserByUid(String uid) async {
     final docRef = db.collection("users").doc(uid);
     DocumentSnapshot doc = await docRef.get();
-    return UserModel.fromJson(doc.data() as Map<String, dynamic>);
+    final String documentId = doc.id;
+    return UserModel.fromJson(doc.data() as Map<String, dynamic>)
+      ..documentId = documentId;
   }
 
   Future createUser(uid, email, name) async {
@@ -19,7 +21,7 @@ class UserServices {
       birthDate: '',
       gender: '',
       role: 'user',
-      createdAt: DateTime.now().toString(),
+      createdAt: DateTime.now(),
     );
 
     db.collection("users").doc(uid).set(data.toJson()).then((_) {

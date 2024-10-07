@@ -21,37 +21,37 @@ class MapScreen extends StatelessWidget {
             urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
             userAgentPackageName: 'com.example.app',
           ),
-          MarkerLayer(
-            markers: List.of(
-              hospitals.map(
-                (hospital) {
-                  return Marker(
-                    width: 100.0,
-                    height: 100.0,
-                    point: LatLng(hospital['geoPoint'].latitude,
-                        hospital['geoPoint'].longitude),
-                    builder: (ctx) => Column(
-                      children: [
-                        const Icon(Icons.location_on,
-                            color: Colors.red, size: 40.0),
-                        Text(
-                          hospital['name'],
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
-                          style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 10.0,
-                              shadows: [
-                                Shadow(color: Colors.white, blurRadius: 2.0)
-                              ]),
-                        )
-                      ],
-                    ),
-                  );
-                },
-              ),
-            ),
-          ),
+          // MarkerLayer(
+          //   markers: List.of(
+          //     hospitals.map(
+          //       (hospital) {
+          //         return Marker(
+          //           width: 100.0,
+          //           height: 100.0,
+          //           point: LatLng(hospital['geoPoint'].latitude,
+          //               hospital['geoPoint'].longitude),
+          //           builder: (ctx) => Column(
+          //             children: [
+          //               const Icon(Icons.location_on,
+          //                   color: Colors.red, size: 40.0),
+          //               Text(
+          //                 hospital['name'],
+          //                 overflow: TextOverflow.ellipsis,
+          //                 maxLines: 1,
+          //                 style: const TextStyle(
+          //                     fontWeight: FontWeight.bold,
+          //                     fontSize: 10.0,
+          //                     shadows: [
+          //                       Shadow(color: Colors.white, blurRadius: 2.0)
+          //                     ]),
+          //               )
+          //             ],
+          //           ),
+          //         );
+          //       },
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );

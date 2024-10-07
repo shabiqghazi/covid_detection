@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:covid_detection/models/user_model.dart';
+import 'package:covid_detection/pages/listchat.dart';
 import 'package:covid_detection/services/auth_services.dart';
 import 'package:covid_detection/pages/bantuan.dart';
 import 'package:covid_detection/pages/cara_kerja.dart';
@@ -23,7 +24,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   final UserServices userServices = UserServices();
   User? userAccount = FirebaseAuth.instance.currentUser;
   UserModel user = UserModel();
-  GeoPoint _currentPosition = const GeoPoint(-7.0, 108.0);
+  GeoPoint _currentLocation = const GeoPoint(-7.0, 108.0);
 
   @override
   void initState() {
@@ -33,10 +34,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   }
 
   Future<void> fetchData() async {
-    UserModel fetchUser = await userServices.getUserByUid(userAccount!.uid);
-    setState(() {
-      user = fetchUser;
-    });
+    user = await userServices.getUserByUid(userAccount!.uid);
   }
 
   // Meminta izin akses mikrofon
@@ -93,7 +91,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
         desiredAccuracy: LocationAccuracy.high,
       );
       setState(() {
-        _currentPosition = GeoPoint(position.latitude, position.longitude);
+        _currentLocation = GeoPoint(position.latitude, position.longitude);
       });
     } catch (e) {
       print('Gagal mendapatkan lokasi: $e');
@@ -102,10 +100,9 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: DefaultTabController(
-        length: 3,
+    return Scaffold(
+      body: DefaultTabController(
+        length: 4,
         child: Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.teal,
@@ -193,6 +190,9 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                 Tab(
                   text: 'Bantuan',
                 ),
+                Tab(
+                  text: 'Obrolan',
+                ),
               ],
             ),
           ),
@@ -203,7 +203,14 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                 Riwayat(
                   userId: userAccount!.uid,
                 ),
-                Bantuan(currentPosition: _currentPosition),
+                Bantuan(
+                  currentLocation: _currentLocation,
+                  userId: userAccount!.uid,
+                ),
+                Listchat(
+                  userId: userAccount!.uid,
+                  curentLocation: _currentLocation,
+                ),
               ],
             ),
           ),

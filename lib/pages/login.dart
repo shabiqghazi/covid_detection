@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:covid_detection/services/auth_services.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Login extends StatefulWidget {
@@ -136,8 +135,7 @@ class _LoginState extends State<Login> {
                                 ),
                                 TextButton(
                                   onPressed: () {
-                                    Navigator.of(context)
-                                        .pushNamed('/register');
+                                    Navigator.pushNamed(context, '/register');
                                   },
                                   child: Text(
                                     "Daftar Disini!",
@@ -183,12 +181,12 @@ class _LoginState extends State<Login> {
                               width: double.infinity,
                               child: ElevatedButton(
                                 onPressed: () async {
-                                  User? user =
-                                      await _authServices.signInWithGoogle();
-                                  if (user != null) {
-                                    // Navigate to the next screen
+                                  try {
+                                    await _authServices.signInWithGoogle();
                                     Navigator.of(context)
                                         .pushReplacementNamed('/home');
+                                  } catch (e) {
+                                    print(e);
                                   }
                                 },
                                 style: ElevatedButton.styleFrom(

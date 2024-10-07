@@ -38,7 +38,7 @@ class _RiwayatState extends State<Riwayat> {
 
   Future<void> fetchData() async {
     List<HistoryModel> fetchHistories =
-        (await historyServices.getHistories(widget.userId));
+        await historyServices.getHistories(widget.userId);
 
     setState(() {
       histories = fetchHistories;
@@ -80,7 +80,7 @@ class _RiwayatState extends State<Riwayat> {
 
   // Mengirim file hasil rekaman
   Future<void> _uploadRecording(String? audioPath) async {
-    var url = Uri.parse('http://192.168.1.15:5000/get_signal');
+    var url = Uri.parse('http://192.168.1.2:5000/get_signal');
     var request = http.MultipartRequest('POST', url);
     final file = File(audioPath!);
 
@@ -213,7 +213,7 @@ class _RiwayatState extends State<Riwayat> {
           ? ListView.builder(
               itemCount: histories.length,
               itemBuilder: (context, index) {
-                DateTime createdAt = DateTime.parse(histories[index].createdAt);
+                DateTime createdAt = histories[index].createdAt;
                 String formattedDate = DateFormat('dd/MM/yy').format(createdAt);
                 String formattedTime =
                     '${createdAt.hour.toString().padLeft(2, '0')}:${createdAt.minute.toString().padLeft(2, '0')}';

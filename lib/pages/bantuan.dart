@@ -1,12 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:covid_detection/models/chatroom_model.dart';
+import 'package:covid_detection/models/user_model.dart';
 import 'package:covid_detection/pages/chatroom.dart';
+import 'package:covid_detection/services/chatroom_services.dart';
 import 'package:covid_detection/services/hospital_services.dart';
 import 'package:covid_detection/pages/map.dart';
+import 'package:covid_detection/services/user_services.dart';
 import 'package:flutter/material.dart';
 
 class Bantuan extends StatefulWidget {
-  final GeoPoint currentPosition;
-  const Bantuan({super.key, required this.currentPosition});
+  final GeoPoint currentLocation;
+  final String userId;
+  const Bantuan(
+      {super.key, required this.currentLocation, required this.userId});
 
   @override
   State<Bantuan> createState() => _BantuanState();
@@ -14,6 +20,8 @@ class Bantuan extends StatefulWidget {
 
 class _BantuanState extends State<Bantuan> {
   List<dynamic> _hospitals = [];
+  ChatRoomServices chatRoomServices = ChatRoomServices();
+  UserServices userServices = UserServices();
 
   @override
   void initState() {
@@ -23,7 +31,7 @@ class _BantuanState extends State<Bantuan> {
 
   Future<void> _fetchData() async {
     try {
-      HospitalServices().getDocs(widget.currentPosition).then((hospitals) {
+      HospitalServices().getDocs(widget.currentLocation).then((hospitals) {
         setState(() {
           _hospitals = hospitals;
         });
@@ -39,7 +47,7 @@ class _BantuanState extends State<Bantuan> {
       children: [
         Expanded(
           child:
-              MapScreen(hospitals: _hospitals, center: widget.currentPosition),
+              MapScreen(hospitals: _hospitals, center: widget.currentLocation),
         ),
         Expanded(
           child: ListView.builder(
@@ -60,13 +68,45 @@ class _BantuanState extends State<Bantuan> {
                   ),
                   trailing: IconButton(
                     onPressed: () async {
-                      // Navigator.of(context).pushNamed('/chatroom');
+                      ChatRoomModel? chatRoom =
+                          await chatRoomServices.getChatRoom(
+                              widget.userId, _hospitals[index]['documentId']);
 
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const Chatroom()),
-                      );
+                      if (chatRoom != null) {
+                        UserModel hospital = await userServices
+                            .getUserByUid(_hospitals[index]['documentId']);
+
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Chatroom(
+                              hospital: hospital,
+                              userId: widget.userId,
+                              chatRoomId: chatRoom.documentId,
+                              currentLocation: widget.currentLocation,
+                            ),
+                          ),
+                        );
+                      } else {
+                        ChatRoomModel? chatRoom =
+                            await chatRoomServices.createChatRoom(
+                                widget.userId, _hospitals[index]['documentId']);
+
+                        UserModel hospital = await userServices
+                            .getUserByUid(_hospitals[index]['documentId']);
+
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Chatroom(
+                              hospital: hospital,
+                              userId: widget.userId,
+                              chatRoomId: chatRoom!.documentId,
+                              currentLocation: widget.currentLocation,
+                            ),
+                          ),
+                        );
+                      }
                     },
                     icon: const Icon(
                       Icons.chat,
