@@ -3,6 +3,7 @@ import 'package:covid_detection/models/chatroom_model.dart';
 import 'package:covid_detection/models/user_model.dart';
 import 'package:covid_detection/pages/chatroom.dart';
 import 'package:covid_detection/services/chatroom_services.dart';
+import 'package:covid_detection/services/report_services.dart';
 import 'package:covid_detection/services/user_services.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -10,16 +11,21 @@ import 'package:intl/intl.dart';
 class Listchat extends StatefulWidget {
   final String userId;
   final GeoPoint curentLocation;
-  const Listchat(
-      {super.key, required this.userId, required this.curentLocation});
+  const Listchat({
+    super.key,
+    required this.userId,
+    required this.curentLocation,
+  });
 
   @override
   State<Listchat> createState() => _ListchatState();
 }
 
 class _ListchatState extends State<Listchat> {
-  ChatRoomServices chatRoomServices = ChatRoomServices();
-  UserServices userServices = UserServices();
+  final ChatRoomServices chatRoomServices = ChatRoomServices();
+  final UserServices userServices = UserServices();
+  final ReportServices reportServices = ReportServices();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,31 +50,27 @@ class _ListchatState extends State<Listchat> {
               return FutureBuilder<UserModel>(
                 future: userServices.getUserByUid(item.participants.first),
                 builder: (context, snapshot) {
-                  // Sementara data sedang dimuat
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return ListTile(
-                      title: const Text('Loading...'),
-                      subtitle: Text(item.lastMessage),
-                      leading: const Icon(Icons.person),
-                    );
-                  }
-
                   // Jika ada error dalam pengambilan data
                   if (snapshot.hasError) {
-                    return ListTile(
-                      title: const Text('Error loading user'),
-                      subtitle: Text(item.lastMessage),
-                      leading: const Icon(Icons.error),
+                    return const Center(
+                      child: Text(
+                        'Load data error (periksa jaringan anda)',
+                        style: TextStyle(
+                          color: Colors.black54,
+                        ),
+                      ),
                     );
                   }
 
-                  // Jika data tersedia
                   if (snapshot.hasData) {
                     UserModel? hospital = snapshot.data;
                     String formattedDate =
                         DateFormat('dd/MM/yy').format(item.lastUpdate);
                     return ListTile(
-                      onTap: () {
+                      onTap: () async {
+                        final report = await reportServices.getReport(
+                            widget.userId, hospital!.documentId!);
+
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -77,6 +79,7 @@ class _ListchatState extends State<Listchat> {
                               userId: widget.userId,
                               chatRoomId: item.documentId,
                               currentLocation: widget.curentLocation,
+                              report: report,
                             ),
                           ),
                         );
@@ -85,25 +88,78 @@ class _ListchatState extends State<Listchat> {
                         hospital?.name ?? "Unknown",
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
+                        style: const TextStyle(
+                          fontSize: 15,
+                        ),
                       ),
-                      subtitle: Text(item.lastMessage),
-                      leading: const Icon(Icons.person),
+                      subtitle: Row(
+                        children: [
+                          item.lastParticipant == widget.userId
+                              ? item.isHospitalRead == true
+                                  ? const Icon(
+                                      Icons.check,
+                                      color: Colors.blue,
+                                      size: 18,
+                                    )
+                                  : const Icon(
+                                      Icons.check,
+                                      color: Colors.grey,
+                                      size: 18,
+                                    )
+                              : item.isUserRead == true
+                                  ? const SizedBox()
+                                  : const Icon(
+                                      Icons.notifications_rounded,
+                                      color: Colors.green,
+                                      size: 18,
+                                    ),
+                          item.lastMessage == 'You sent your history'
+                              ? Text(
+                                  item.lastMessage,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                  style: const TextStyle(
+                                    fontSize: 15,
+                                    fontStyle: FontStyle.italic,
+                                  ),
+                                )
+                              : Expanded(
+                                  child: Text(
+                                    item.lastMessage.length > 20
+                                        ? '${item.lastMessage.substring(0, 20)}...'
+                                        : item.lastMessage,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
+                                    style: TextStyle(
+                                      color: item.lastParticipant !=
+                                                  widget.userId &&
+                                              item.isUserRead == false
+                                          ? Colors.green
+                                          : Colors.black,
+                                    ),
+                                  ),
+                                ),
+                        ],
+                      ),
+                      leading: Icon(
+                        Icons.health_and_safety,
+                        color: Colors.green[600],
+                        size: 35,
+                      ),
                       trailing: Text(
                         formattedDate,
-                        style: const TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: item.lastParticipant != widget.userId &&
+                                  item.isUserRead == false
+                              ? Colors.green
+                              : Colors.black54,
                         ),
                       ),
                     );
+                  } else {
+                    return const SizedBox();
                   }
-
-                  // Jika data tidak tersedia
-                  return ListTile(
-                    title: const Text("Rumah sakit tidak ditemukan"),
-                    subtitle: Text(item.lastMessage),
-                    leading: const Icon(Icons.person),
-                  );
                 },
               );
             },

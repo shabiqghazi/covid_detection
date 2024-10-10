@@ -2,20 +2,20 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class HospitalServices {
   Future<List<dynamic>> getDocs(GeoPoint currentLocation) async {
-    // final distance = 0.5;
+    const distance = 0.05;
 
-    // final double lowerLat = currentLocation.latitude - distance;
-    // final double lowerLon = currentLocation.longitude - distance;
-    // final double greaterLat = currentLocation.latitude + distance;
-    // final double greaterLon = currentLocation.longitude + distance;
-    // final lesserGeopoint = GeoPoint(lowerLat, lowerLon);
-    // final greaterGeopoint = GeoPoint(greaterLat, greaterLon);
+    final double lowerLat = currentLocation.latitude - distance;
+    final double lowerLon = currentLocation.longitude - distance;
+    final double greaterLat = currentLocation.latitude + distance;
+    final double greaterLon = currentLocation.longitude + distance;
+    final lesserGeopoint = GeoPoint(lowerLat, lowerLon);
+    final greaterGeopoint = GeoPoint(greaterLat, greaterLon);
     try {
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
           .collection('users')
           .where('role', isEqualTo: 'hospital')
-          // .where('geoPoint',
-          //     isGreaterThan: lesserGeopoint, isLessThan: greaterGeopoint)
+          .where('geoPoint',
+              isGreaterThan: lesserGeopoint, isLessThan: greaterGeopoint)
           .get();
       final allData = querySnapshot.docs.map((doc) {
         final String documentId = doc.id;

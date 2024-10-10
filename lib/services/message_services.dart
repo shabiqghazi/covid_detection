@@ -25,10 +25,11 @@ class MessageServices {
     }
   }
 
-  Future<void> addMessage(text, userId, chatRoomId) async {
+  Future<void> addTextMessage(text, userId, chatRoomId) async {
     final data = MessageModel(
       isRead: false,
       sender: userId,
+      type: 'text',
       text: text,
       timestamp: DateTime.now(),
     );
@@ -37,6 +38,26 @@ class MessageServices {
         .collection('chatRooms')
         .doc(chatRoomId)
         .collection('messages')
-        .add(data.toJson());
+        .add(data.toTextJson());
+  }
+
+  Future<void> addHistoryMessage(
+      dimension, size, dispersi, userId, chatRoomId) async {
+    final data = MessageModel(
+      isRead: false,
+      sender: userId,
+      dimension: dimension,
+      size: size,
+      dispersi: dispersi,
+      type: 'history',
+      text: '',
+      timestamp: DateTime.now(),
+    );
+
+    db
+        .collection('chatRooms')
+        .doc(chatRoomId)
+        .collection('messages')
+        .add(data.toHistoryJson());
   }
 }

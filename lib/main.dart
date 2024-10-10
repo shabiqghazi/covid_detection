@@ -1,5 +1,4 @@
 import 'package:covid_detection/firebase_options.dart';
-import 'package:covid_detection/pages/chatroom.dart';
 import 'package:covid_detection/pages/register.dart';
 import 'package:covid_detection/pages/home.dart';
 import 'package:covid_detection/pages/login.dart';
@@ -37,7 +36,6 @@ class MyApp extends StatelessWidget {
         '/home': (context) => const Home(),
         '/login': (context) => const Login(),
         '/register': (context) => const Register(),
-        '/profile': (context) => const Profile(),
       },
     );
   }

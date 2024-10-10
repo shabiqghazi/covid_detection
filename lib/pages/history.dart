@@ -40,9 +40,11 @@ class _RiwayatState extends State<Riwayat> {
     List<HistoryModel> fetchHistories =
         await historyServices.getHistories(widget.userId);
 
-    setState(() {
-      histories = fetchHistories;
-    });
+    if (mounted) {
+      setState(() {
+        histories = fetchHistories;
+      });
+    }
   }
 
   // Memulai perekaman suara
@@ -80,7 +82,7 @@ class _RiwayatState extends State<Riwayat> {
 
   // Mengirim file hasil rekaman
   Future<void> _uploadRecording(String? audioPath) async {
-    var url = Uri.parse('http://192.168.1.2:5000/get_signal');
+    var url = Uri.parse('https://c9b8-36-79-41-229.ngrok-free.app/get_signal');
     var request = http.MultipartRequest('POST', url);
     final file = File(audioPath!);
 
@@ -101,7 +103,9 @@ class _RiwayatState extends State<Riwayat> {
       if (response.statusCode == 200) {
         final responseBody = await response.stream.bytesToString();
 
-        historyServices.createHistory(responseBody, widget.userId).then((_) {
+        await historyServices
+            .createHistory(responseBody, widget.userId)
+            .then((_) {
           fetchData();
         });
 
@@ -111,8 +115,7 @@ class _RiwayatState extends State<Riwayat> {
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content:
-                const Text('Gagal mengunggah file! (Internal Server Error)'),
+            content: Text('Gagal mengunggah file! (${response.statusCode})'),
             backgroundColor: Colors.red[800],
           ),
         );
@@ -220,9 +223,10 @@ class _RiwayatState extends State<Riwayat> {
                 return Column(
                   children: [
                     ListTile(
-                      leading: const Icon(
+                      leading: Icon(
                         Icons.multitrack_audio,
                         size: 30,
+                        color: Colors.blue[700],
                       ),
                       title: Text(
                         formattedTime,
@@ -241,11 +245,11 @@ class _RiwayatState extends State<Riwayat> {
                             style: const TextStyle(
                               fontSize: 11,
                             ),
-                          )
+                          ),
                         ],
                       ),
                       trailing: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Text(
@@ -263,7 +267,7 @@ class _RiwayatState extends State<Riwayat> {
                             },
                             child: const Icon(
                               Icons.delete,
-                              size: 25,
+                              size: 27,
                               color: Colors.grey,
                             ),
                           ),

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class CaraKerja extends StatelessWidget {
-  const CaraKerja({super.key});
+class Workflow extends StatelessWidget {
+  const Workflow({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -1,11 +1,13 @@
 import 'package:covid_detection/models/user_model.dart';
+import 'package:covid_detection/pages/home.dart';
 import 'package:covid_detection/services/user_services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class Profile extends StatefulWidget {
-  const Profile({super.key});
+  final UserModel user;
+  const Profile({super.key, required this.user});
 
   @override
   State<Profile> createState() => _ProfileState();
@@ -13,47 +15,25 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   bool edit = false;
-  late UserModel user;
   User? userAccount = FirebaseAuth.instance.currentUser;
   final _formKey = GlobalKey<FormState>();
   final userServices = UserServices();
-  late TextEditingController nameController;
-  late TextEditingController emailController;
-  late TextEditingController phoneController;
-  late TextEditingController addressController;
-  late TextEditingController birthDateController;
-  String? selectedGender;
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    user = ModalRoute.of(context)!.settings.arguments as UserModel;
-    nameController = TextEditingController(text: user.name);
-    emailController = TextEditingController(text: user.email);
-    phoneController = TextEditingController(text: user.phone);
-    addressController = TextEditingController(text: user.address);
-    birthDateController = TextEditingController(text: user.birthDate);
-    selectedGender = user.gender != '' ? user.gender : null;
-  }
-
-  @override
-  void dispose() {
-    nameController.dispose();
-    emailController.dispose();
-    phoneController.dispose();
-    addressController.dispose();
-    birthDateController.dispose();
-    super.dispose();
-  }
+  late TextEditingController nameController =
+      TextEditingController(text: widget.user.name);
+  late TextEditingController emailController =
+      TextEditingController(text: widget.user.email);
+  late TextEditingController phoneController =
+      TextEditingController(text: widget.user.phone);
+  late TextEditingController addressController =
+      TextEditingController(text: widget.user.address);
+  late TextEditingController birthDateController =
+      TextEditingController(text: widget.user.birthDate);
+  late String? selectedGender =
+      widget.user.gender != '' ? widget.user.gender : null;
 
   Future<void> resetForm() async {
     setState(() {
-      nameController.text = user.name as String;
-      emailController.text = user.email as String;
-      phoneController.text = user.phone as String;
-      addressController.text = user.address as String;
-      birthDateController.text = user.birthDate as String;
-      selectedGender = user.gender != '' ? user.gender : null;
       _formKey.currentState!.reset();
       FocusScope.of(context).unfocus();
       edit = !edit;
@@ -292,7 +272,23 @@ class _ProfileState extends State<Profile> {
                                         addressController.text,
                                         birthDateController.text,
                                         selectedGender,
-                                        user.createdAt,
+                                        widget.user.createdAt,
+                                      );
+
+                                      Navigator.pushAndRemoveUntil(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => const Home(),
+                                        ),
+                                        (Route<dynamic> route) => false,
+                                      );
+
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                          content:
+                                              Text('Profil berhasil diubah'),
+                                        ),
                                       );
                                     }
                                   },

@@ -40,11 +40,9 @@ class ChatRoomServices {
 
       QuerySnapshot query = await docRef.get();
 
-      // Memeriksa hasil untuk memastikan keduanya (userId dan hospitalId) ada di participants
       final chatRoomsDocs = query.docs.where((doc) {
         final participants = List<String>.from(doc['participants']);
-        return participants
-            .contains(hospitalId); // Cek apakah hospitalId juga ada
+        return participants.contains(hospitalId);
       });
 
       if (chatRoomsDocs.isNotEmpty) {
@@ -66,6 +64,9 @@ class ChatRoomServices {
       final participantsList = [hospitalId, userId];
       final data = ChatRoomModel(
           lastMessage: '',
+          lastParticipant: userId,
+          isUserRead: false,
+          isHospitalRead: false,
           lastUpdate: DateTime.now(),
           participants: participantsList);
 
@@ -88,10 +89,18 @@ class ChatRoomServices {
     }
   }
 
-  Future<void> updadeChatRoom(String message, String documentId) async {
+  Future<void> updateChatRoom(
+      String message, String documentId, String userId) async {
     await db.collection('chatRooms').doc(documentId).update({
       'lastMessage': message,
+      'lastParticipant': userId,
       'lastUpdate': DateTime.now(),
+    });
+  }
+
+  Future<void> updateIsUserRead(String documentId) async {
+    await db.collection('chatRooms').doc(documentId).update({
+      'isUserRead': true,
     });
   }
 }

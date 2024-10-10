@@ -2,9 +2,10 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:covid_detection/models/user_model.dart';
 import 'package:covid_detection/pages/listchat.dart';
+import 'package:covid_detection/pages/profile.dart';
 import 'package:covid_detection/services/auth_services.dart';
 import 'package:covid_detection/pages/bantuan.dart';
-import 'package:covid_detection/pages/cara_kerja.dart';
+import 'package:covid_detection/pages/workflow.dart';
 import 'package:covid_detection/pages/history.dart';
 import 'package:covid_detection/services/user_services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -24,7 +25,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   final UserServices userServices = UserServices();
   User? userAccount = FirebaseAuth.instance.currentUser;
   UserModel user = UserModel();
-  GeoPoint _currentLocation = const GeoPoint(-7.0, 108.0);
+  GeoPoint _currentLocation = const GeoPoint(0, 0);
 
   @override
   void initState() {
@@ -126,10 +127,13 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                     // Gunakan Future.microtask untuk menangani kode asinkron
                     Future.microtask(() async {
                       if (value == 'profile') {
-                        Navigator.pushNamed(
+                        Navigator.push(
                           context,
-                          '/profile',
-                          arguments: user,
+                          MaterialPageRoute(
+                            builder: (context) => Profile(
+                              user: user,
+                            ),
+                          ),
                         );
                       } else if (value == 'logout') {
                         _confirmLogout(context);
@@ -199,7 +203,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
           body: SafeArea(
             child: TabBarView(
               children: <Widget>[
-                const CaraKerja(),
+                const Workflow(),
                 Riwayat(
                   userId: userAccount!.uid,
                 ),

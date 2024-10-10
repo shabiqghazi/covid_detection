@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class HistoryModel {
-  final String status, dimension, size, dispersi, url;
+  final String status, dimension, size, dispersi;
   final DateTime createdAt;
   String? userId, documentId;
 
@@ -11,7 +13,6 @@ class HistoryModel {
     required this.dimension,
     required this.size,
     required this.dispersi,
-    required this.url,
   });
 
   Map<String, dynamic> toJson() {
@@ -22,7 +23,6 @@ class HistoryModel {
       'dimension': dimension,
       'size': size,
       'dispersi': dispersi,
-      'url': url,
     };
   }
 
@@ -30,24 +30,21 @@ class HistoryModel {
     return HistoryModel(
       status: json['status'],
       userId: json['userId'],
-      createdAt: json['createdAt'],
+      createdAt: (json['createdAt'] as Timestamp).toDate(),
       dimension: json['dimension'],
       size: json['size'],
       dispersi: json['dispersi'],
-      url: json['url'],
     );
   }
 
   factory HistoryModel.fromPythonJson(Map<String, dynamic> json, userId) {
-    String status = json['status'].replaceAll('\n', '');
     return HistoryModel(
-      status: status,
+      status: json['status'],
       userId: userId,
       createdAt: DateTime.now(),
       dimension: json['dimension'],
       size: json['size'],
       dispersi: json['dispersi'],
-      url: json['url'],
     );
   }
 }
