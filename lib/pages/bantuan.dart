@@ -148,7 +148,7 @@ class _BantuanState extends State<Bantuan> {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                 content: Text(
-                                    'Lengkapin profile anda terlebih dahulu'),
+                                    'Lengkapin profil anda terlebih dahulu'),
                               ),
                             );
                           }

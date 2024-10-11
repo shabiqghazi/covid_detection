@@ -114,11 +114,11 @@ class _ListchatState extends State<Listchat> {
                                       size: 18,
                                     ),
                           item.lastMessage == 'You sent your history'
-                              ? Text(
-                                  item.lastMessage,
+                              ? const Text(
+                                  'You sent a history',
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 1,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 15,
                                     fontStyle: FontStyle.italic,
                                   ),

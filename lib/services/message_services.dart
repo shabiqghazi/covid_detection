@@ -27,7 +27,6 @@ class MessageServices {
 
   Future<void> addTextMessage(text, userId, chatRoomId) async {
     final data = MessageModel(
-      isRead: false,
       sender: userId,
       type: 'text',
       text: text,
@@ -42,13 +41,13 @@ class MessageServices {
   }
 
   Future<void> addHistoryMessage(
-      dimension, size, dispersi, userId, chatRoomId) async {
+      dimension, size, dispersi, status, userId, chatRoomId) async {
     final data = MessageModel(
-      isRead: false,
       sender: userId,
       dimension: dimension,
       size: size,
       dispersi: dispersi,
+      status: status,
       type: 'history',
       text: '',
       timestamp: DateTime.now(),

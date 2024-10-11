@@ -5,8 +5,8 @@ import 'package:latlong2/latlong.dart';
 
 class Map extends StatefulWidget {
   final GeoPoint center;
-  Map({super.key, required this.hospitals, required this.center});
-  List<dynamic> hospitals;
+  final List<dynamic> hospitals;
+  const Map({super.key, required this.hospitals, required this.center});
 
   @override
   State<Map> createState() => _MapState();

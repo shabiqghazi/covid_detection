@@ -58,9 +58,11 @@ class _ChatsState extends State<Chats> {
                               maxWidth: screenWidth * 0.8,
                             ),
                             decoration: BoxDecoration(
-                              color: item.type == 'text'
-                                  ? Colors.teal
-                                  : Colors.blue[700],
+                              color: widget.hospitalId == item.sender
+                                  ? Colors.lightBlue[700]
+                                  : item.type == 'text'
+                                      ? Colors.teal
+                                      : Colors.blue[800],
                               borderRadius: BorderRadius.circular(13),
                             ),
                             child: Padding(
@@ -81,14 +83,29 @@ class _ChatsState extends State<Chats> {
                                         Padding(
                                           padding:
                                               const EdgeInsets.only(bottom: 3),
-                                          child: Text(
-                                            'Dim: ${double.parse(item.dimension!).toStringAsFixed(2)}  Size: ${double.parse(item.size!).toStringAsFixed(2)}  Dispersi: ${double.parse(item.dispersi!).toStringAsFixed(2)}',
-                                            overflow: TextOverflow.ellipsis,
-                                            maxLines: 1,
-                                            style: const TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 13,
-                                            ),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                'Result: ${item.status}',
+                                                overflow: TextOverflow.ellipsis,
+                                                maxLines: 1,
+                                                style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 13,
+                                                ),
+                                              ),
+                                              Text(
+                                                'Dim: ${double.parse(item.dimension!).toStringAsFixed(2)}  Size: ${double.parse(item.size!).toStringAsFixed(2)}  Dispersi: ${double.parse(item.dispersi!).toStringAsFixed(2)}',
+                                                overflow: TextOverflow.ellipsis,
+                                                maxLines: 1,
+                                                style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 13,
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ),
                                         Row(

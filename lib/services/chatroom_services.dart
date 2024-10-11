@@ -94,6 +94,7 @@ class ChatRoomServices {
     await db.collection('chatRooms').doc(documentId).update({
       'lastMessage': message,
       'lastParticipant': userId,
+      'isHospitalRead': false,
       'lastUpdate': DateTime.now(),
     });
   }

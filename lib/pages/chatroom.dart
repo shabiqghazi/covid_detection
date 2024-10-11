@@ -127,7 +127,7 @@ class _ChatroomState extends State<Chatroom> {
       String age = years.toString();
 
       String message =
-          'Saya mengajukan permintaan bantuan. Nama Lengkap: ${user.name} Usia: $age Jenis Kelamin : ${user.gender} Telepon: ${user.phone} Alamat: ${user.address} Email: ${user.email}';
+          'Saya mengajukan permintaan bantuan. \nNama Lengkap: ${user.name} \nUsia: $age \nJenis Kelamin : ${user.gender} \nTelepon: ${user.phone} \nAlamat: ${user.address} \nEmail: ${user.email}';
 
       await messageServices.addTextMessage(
         message,

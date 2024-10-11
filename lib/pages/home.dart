@@ -137,6 +137,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                         );
                       } else if (value == 'logout') {
                         _confirmLogout(context);
+                      } else if (value == 'about') {
+                        Navigator.pushNamed(context, '/about');
                       }
                     });
                   },
@@ -147,7 +149,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                         child: Row(
                           children: [
                             Icon(Icons.person),
-                            SizedBox(width: 8),
+                            SizedBox(width: 6),
                             Text('Profile'),
                           ],
                         ),
@@ -157,8 +159,18 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                         child: Row(
                           children: [
                             Icon(Icons.logout),
-                            SizedBox(width: 8),
+                            SizedBox(width: 6),
                             Text('Logout'),
+                          ],
+                        ),
+                      ),
+                      PopupMenuItem<String>(
+                        value: 'about',
+                        child: Row(
+                          children: [
+                            Icon(Icons.info),
+                            SizedBox(width: 6),
+                            Text('Tentang'),
                           ],
                         ),
                       ),
@@ -186,7 +198,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
               indicatorColor: Colors.white,
               tabs: [
                 Tab(
-                  text: 'Cara Kerja',
+                  text: 'Panduan',
                 ),
                 Tab(
                   text: 'Riwayat',

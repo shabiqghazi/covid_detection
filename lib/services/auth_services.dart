@@ -62,7 +62,8 @@ class AuthServices {
       );
 
       if (!context.mounted) return;
-      Navigator.pushReplacementNamed(context, '/home');
+      Navigator.pushNamedAndRemoveUntil(
+          context, '/home', (Route<dynamic> route) => false);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         showSnackbarMessage(context, 'Password terlalu lemah.');
@@ -78,14 +79,24 @@ class AuthServices {
   Future signInWithEmailAndPassword(
       BuildContext context, emailAddress, password) async {
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
+      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: emailAddress,
         password: password,
       );
 
-      if (!context.mounted) return;
-      Navigator.pushReplacementNamed(context, '/home');
+      final user = await _userServices.getUserByUid(credential.user!.uid);
+
+      if (user.role != 'user') {
+        await _googleSignIn.signOut();
+        await _auth.signOut();
+        if (!context.mounted) return;
+        showSnackbarMessage(context, 'Gunakan akun lain untuk login.');
+      } else {
+        if (!context.mounted) return;
+        Navigator.pushReplacementNamed(context, '/home');
+      }
     } on FirebaseAuthException catch (e) {
+      if (!context.mounted) return;
       if (e.code == 'invalid-credential') {
         showSnackbarMessage(context, 'Email atau password salah.');
       }

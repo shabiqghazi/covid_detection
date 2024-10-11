@@ -25,6 +25,7 @@ dependencies:
   http_parser: ^4.0.2
   cloud_firestore: ^5.4.1
   audio_waveforms: ^1.0.5
+  url_launcher: ^6.3.1
 
 dev_dependencies:
   flutter_test:
@@ -37,3 +38,9 @@ flutter:
     - images/mic_permission.jpeg
     - images/loc_permission.jpeg
     - images/logo.png
+    - images/yoss.jpeg
+    - images/shabiq.jpeg
+    - images/mamat.jpeg
+    - images/hospitals.jpeg
+    - images/histories.jpeg
+    - images/listchat.jpeg

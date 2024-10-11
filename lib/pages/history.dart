@@ -82,7 +82,7 @@ class _RiwayatState extends State<Riwayat> {
 
   // Mengirim file hasil rekaman
   Future<void> _uploadRecording(String? audioPath) async {
-    var url = Uri.parse('https://c9b8-36-79-41-229.ngrok-free.app/get_signal');
+    var url = Uri.parse('http://192.168.1.41:5000/get_signal');
     var request = http.MultipartRequest('POST', url);
     final file = File(audioPath!);
 

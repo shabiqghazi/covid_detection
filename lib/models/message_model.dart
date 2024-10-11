@@ -1,13 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class MessageModel {
-  final bool isRead;
   final String sender, text, type;
   final DateTime timestamp;
-  String? dimension, size, dispersi;
+  String? dimension, size, dispersi, status;
 
   MessageModel({
-    required this.isRead,
     required this.sender,
     required this.text,
     required this.type,
@@ -15,15 +13,16 @@ class MessageModel {
     this.dimension,
     this.size,
     this.dispersi,
+    this.status,
   });
 
   factory MessageModel.fromJson(Map<String, dynamic> json) {
     return MessageModel(
-      isRead: json['isRead'] ?? false,
       sender: json['sender'] ?? '',
       dimension: json['dimension'] ?? '',
       size: json['size'] ?? '',
       dispersi: json['dispersi'] ?? '',
+      status: json['status'] ?? '',
       text: json['text'] ?? '',
       type: json['type'] ?? '',
       timestamp: (json['timestamp'] as Timestamp).toDate(),
@@ -32,7 +31,6 @@ class MessageModel {
 
   Map<String, dynamic> toTextJson() {
     return {
-      'isRead': isRead,
       'sender': sender,
       'type': type,
       'text': text,
@@ -42,11 +40,11 @@ class MessageModel {
 
   Map<String, dynamic> toHistoryJson() {
     return {
-      'isRead': isRead,
       'sender': sender,
       'dimension': dimension,
       'size': size,
       'dispersi': dispersi,
+      'status': status,
       'type': type,
       'text': text,
       'timestamp': timestamp,

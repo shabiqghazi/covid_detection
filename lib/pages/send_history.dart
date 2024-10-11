@@ -115,6 +115,7 @@ class _SendHistoryState extends State<SendHistory> {
                                   histories[index].dimension,
                                   histories[index].size,
                                   histories[index].dispersi,
+                                  histories[index].status,
                                   widget.userId,
                                   widget.chatRoomId,
                                 );
