@@ -9,7 +9,7 @@ class ReportServices {
       diseaseType: 'Covid 19',
       hospitalId: hospitalId,
       userId: userId,
-      status: 'Belum Diterima',
+      status: 'a',
       place: place,
       createdAt: DateTime.now(),
     );
@@ -17,7 +17,7 @@ class ReportServices {
     try {
       await db.collection('reports').add(data.toJson());
     } catch (e) {
-      print('Error createReport: $e');
+      rethrow;
     }
   }
 
@@ -25,7 +25,8 @@ class ReportServices {
     final docRef = db
         .collection('reports')
         .where('userId', isEqualTo: userId)
-        .where('hospitalId', isEqualTo: hospitalId);
+        .where('hospitalId', isEqualTo: hospitalId)
+        .where('status', isNotEqualTo: 'c');
 
     QuerySnapshot query = await docRef.get();
     if (query.docs.isNotEmpty) {

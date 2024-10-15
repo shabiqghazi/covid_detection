@@ -20,7 +20,6 @@ class MessageServices {
 
       return data;
     } catch (e) {
-      print("Error fetching messages: $e");
       return const Stream.empty();
     }
   }

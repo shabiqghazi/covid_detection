@@ -228,7 +228,6 @@ class _ProfileState extends State<Profile> {
                             setState(() {
                               birthDateController.text = formattedDate;
                             });
-                            print(birthDateController.text);
                           }
                         }
                       },
@@ -275,6 +274,7 @@ class _ProfileState extends State<Profile> {
                                         widget.user.createdAt,
                                       );
 
+                                      if (!context.mounted) return;
                                       Navigator.pushAndRemoveUntil(
                                         context,
                                         MaterialPageRoute(

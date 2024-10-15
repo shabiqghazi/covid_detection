@@ -71,6 +71,7 @@ class _ListchatState extends State<Listchat> {
                         final report = await reportServices.getReport(
                             widget.userId, hospital!.documentId!);
 
+                        if (!context.mounted) return;
                         Navigator.push(
                           context,
                           MaterialPageRoute(

@@ -10,7 +10,7 @@ class HistoryServices {
     final docRef = db
         .collection("histories")
         .where("userId", isEqualTo: userId)
-        .orderBy("createdAt");
+        .orderBy("createdAt", descending: true);
     QuerySnapshot query = await docRef.get();
     final data = query.docs.map((doc) {
       final String documentId = doc.id;

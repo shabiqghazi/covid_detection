@@ -22,12 +22,9 @@ class ChatRoomServices {
               ..documentId = documentId; // Konversi ke ChatroomModel
           }).toList());
 
-      print("Connection successful.");
-
       // Mengembalikan stream berupa List<ChatroomModel>
       return data;
     } catch (e) {
-      print("Error connecting to Firestore: $e");
       return const Stream.empty();
     }
   }
@@ -53,7 +50,6 @@ class ChatRoomServices {
         return null;
       }
     } catch (e) {
-      print("Error connecting to Firestore: $e");
       return null;
     }
   }
@@ -80,11 +76,9 @@ class ChatRoomServices {
         Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
         return ChatRoomModel.fromJson(data)..documentId = documentId;
       } else {
-        print('No data found for the created chat room');
         return null;
       }
     } catch (e) {
-      print('Error creating chat room: $e');
       return null;
     }
   }

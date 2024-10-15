@@ -41,7 +41,7 @@ class _BantuanState extends State<Bantuan> {
         });
       });
     } catch (e) {
-      print("Error fetching data: $e");
+      rethrow;
     }
   }
 
@@ -79,10 +79,19 @@ class _BantuanState extends State<Bantuan> {
                         color: Colors.green[600],
                         size: 35,
                       ),
-                      title: Text(
-                        _hospitals[index]['name'],
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
+                      title: Tooltip(
+                        message: _hospitals[index]['name'],
+                        child: GestureDetector(
+                          onTap: () {},
+                          child: Text(
+                            _hospitals[index]['name'],
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                            style: const TextStyle(
+                              fontSize: 15,
+                            ),
+                          ),
+                        ),
                       ),
                       subtitle: Text(
                         _hospitals[index]['address'],
@@ -113,6 +122,7 @@ class _BantuanState extends State<Bantuan> {
                               await chatRoomServices
                                   .updateIsUserRead(chatRoom.documentId!);
 
+                              if (!context.mounted) return;
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -131,6 +141,7 @@ class _BantuanState extends State<Bantuan> {
                                       widget.userId,
                                       _hospitals[index]['documentId']);
 
+                              if (!context.mounted) return;
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -145,6 +156,7 @@ class _BantuanState extends State<Bantuan> {
                               );
                             }
                           } else {
+                            if (!context.mounted) return;
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                 content: Text(

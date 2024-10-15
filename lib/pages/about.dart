@@ -1,7 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class About extends StatelessWidget {
   const About({super.key});
+
+  Future<void> launchCustomUrl(String url) async {
+    final Uri uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,51 +32,105 @@ class About extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 10.0),
         children: [
           const ListTile(
-            title: Text("Tentang Aplikasi", style: TextStyle(fontSize: 20)),
+            contentPadding: EdgeInsets.all(0),
+            title: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 15),
+              child: Text('Tentang Aplikasi', style: TextStyle(fontSize: 20)),
+            ),
             subtitle: Column(
               children: [
                 Padding(
                   padding: EdgeInsets.only(top: 8),
                   child: Divider(),
                 ),
-                Text(
-                  'Aplikasi ini merupakan alat pendeteksi dini COVID-19 yang dirancang untuk pengguna individu. Dengan menggunakan teknologi kecerdasan buatan, aplikasi mampu menganalisis suara batuk dan beberapa parameter kesehatan untuk memprediksi kemungkinan terpapar COVID-19. Pengguna cukup melakukan beberapa langkah sederhana untuk melakukan pemeriksaan mandiri secara praktis dan cepat, tanpa perlu ke fasilitas kesehatan.',
-                  style: TextStyle(fontSize: 15),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 15),
+                  child: Text(
+                    'Cough Detection merupakan aplikasi Pre-Skrining pertama di Indonesia yang melakukan deteksi dini terhadap penyakit yang memiliki gejala batuk dengan menggunakan teknologi cerdas yang terbaru dengan tingkat akurasi tinggi. Aplikasi ini bersifat pemeriksaan mandiri yang dapat dilakukan di mana saja dan kapan saja langsung oleh pengguna. Pemanfaatan metodelogi PSKV-E semakin menjamin kehandalan dan keberlanjutan dari aplikasi ini dengan berkolaborasi dengan stakeholder seperti layanan kesehatan terdekat dan pemerintahan setempat.',
+                    style: TextStyle(fontSize: 15),
+                  ),
                 ),
               ],
             ),
           ),
-          const Expanded(child: Divider()),
+          const Divider(),
           const ListTile(
-            title: Text("Tentang Pengembang", style: TextStyle(fontSize: 20)),
+            contentPadding: EdgeInsets.symmetric(horizontal: 0),
+            title: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 15),
+              child: Text('Tentang Pengembang', style: TextStyle(fontSize: 20)),
+            ),
             subtitle: Column(
               children: [
                 Padding(
                   padding: EdgeInsets.only(top: 8),
                   child: Divider(),
                 ),
-                Text(
-                    "Andromeda Teknologi adalah perusahaan pengembang perangkat lunak yang berfokus pada solusi digital inovatif untuk berbagai sektor, termasuk kesehatan, pendidikan, dan teknologi konsumen. Dengan komitmen untuk menghadirkan teknologi yang dapat memudahkan kehidupan sehari-hari, Andromeda Teknologi menggabungkan kecerdasan buatan (AI) dan pendekatan berbasis data untuk menciptakan aplikasi yang tangguh, aman, dan mudah digunakan.",
-                    style: TextStyle(fontSize: 15)),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 15),
+                  child: Text(
+                      'Aplikasi ini dikembangkan di Institut Teknologi Bandung (ITB) dengan berkolaborasi dengan start up Andromeda Teknologi sebagai mitra developer pengembangan aplikasi. Melalui metodelogi ilmiah dan mengikuti perkembangan teknologi terkini, aplikasi ini telah teruji oleh akademisi bidang teknologi dari ITB pada tahun 2024. Diawasi oleh Prof. Ir. Armein Z.R. Langi, M.Sc. Ph.D yang merupakan Guru Besar di ITB pada KK Teknologi Informasi.',
+                      style: TextStyle(fontSize: 15)),
+                ),
               ],
             ),
           ),
-          const Expanded(child: Divider()),
+          const Divider(),
           ListTile(
-            title: const Text("Pengembang", style: TextStyle(fontSize: 20)),
-            subtitle: Column(
+            contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+            title: const Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Padding(
-                  padding: EdgeInsets.only(top: 8),
-                  child: Divider(),
+                Padding(
+                  padding: EdgeInsets.only(left: 15, bottom: 8),
+                  child: Text('Pengembang', style: TextStyle(fontSize: 20)),
                 ),
-                ListTile(
-                  contentPadding: const EdgeInsets.all(0),
-                  leading: ClipRRect(
+                Divider(),
+              ],
+            ),
+            subtitle: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Column(
+                children: [
+                  ListTile(
+                    contentPadding: const EdgeInsets.all(0),
+                    leading: ClipRRect(
+                      borderRadius: BorderRadius.circular(50),
+                      child: Image.asset(
+                        'images/armein.png',
+                        fit: BoxFit.contain,
+                        width: 40,
+                        height: 40,
+                        errorBuilder: (context, error, stackTrace) {
+                          return const Icon(
+                            Icons.person,
+                            size: 40,
+                          );
+                        },
+                      ),
+                    ),
+                    title: const Text(
+                      'Prof. Ir. Armein Z.R. Langi, M.Sc. Ph.D',
+                      style:
+                          TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                    ),
+                    subtitle: const Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Dewan Pengawas', style: TextStyle(fontSize: 13)),
+                        // Text('Instagram: @zawilhikam'),
+                      ],
+                    ),
+                  ),
+                  ListTile(
+                    onTap: () => launchCustomUrl(
+                        'instagram://user?username=zawilhikam_'),
+                    contentPadding: const EdgeInsets.all(0),
+                    leading: ClipRRect(
                       borderRadius: BorderRadius.circular(50),
                       child: Image.asset(
                         'images/zawil.jpeg',
-                        fit: BoxFit.cover,
+                        fit: BoxFit.contain,
                         width: 40,
                         height: 40,
                         errorBuilder: (context, error, stackTrace) {
@@ -75,114 +139,128 @@ class About extends StatelessWidget {
                             size: 40,
                           );
                         },
-                      )),
-                  title: const Text("Zawil Hikam"),
-                  subtitle: const Text("instagram: @zawilhikam"),
-                  // onTap: () async {
-                  //   var url = "https://www.instagram.com/zawilhikam";
-                  //   if (await canLaunchUrlString(url)) {
-                  //     await launchUrlString(url);
-                  //   } else {
-                  //     throw 'Could not launch $url';
-                  //   }
-                  // },
-                ),
-                ListTile(
-                  contentPadding: const EdgeInsets.all(0),
-                  leading: ClipRRect(
-                      borderRadius: BorderRadius.circular(50),
-                      child: Image.asset(
-                        'images/shabiq.jpeg',
-                        fit: BoxFit.cover,
-                        width: 40,
-                        height: 40,
-                        errorBuilder: (context, error, stackTrace) {
-                          return const Icon(
-                            Icons.person,
-                            size: 40,
-                          );
-                        },
-                      )),
-                  title: const Text("Shabiq Ghazi Arkaan"),
-                  subtitle: const Text("instagram: @shabiqghazi"),
-                  // onTap: () async {
-                  //   var url = "https://www.instagram.com/shabiqghazi";
-                  //   if (await canLaunchUrlString(url)) {
-                  //     await launchUrlString(url);
-                  //   } else {
-                  //     throw 'Could not launch $url';
-                  //   }
-                  // },
-                ),
-                ListTile(
-                  contentPadding: const EdgeInsets.all(0),
-                  leading: ClipRRect(
-                      borderRadius: BorderRadius.circular(50),
-                      child: Image.asset(
-                        'images/yoss.jpeg',
-                        fit: BoxFit.cover,
-                        width: 40,
-                        height: 40,
-                        errorBuilder: (context, error, stackTrace) {
-                          return const Icon(
-                            Icons.person,
-                            size: 40,
-                          );
-                        },
-                      )),
-                  title: const Text("Yoss Sagita Ananto"),
-                  subtitle: const Text("instagram: @yossananto"),
-                  // onTap: () async {
-                  //   var url = "https://www.instagram.com/yossananto";
-                  //   if (await canLaunchUrlString(url)) {
-                  //     await launchUrlString(url);
-                  //   } else {
-                  //     throw 'Could not launch $url';
-                  //   }
-                  // },
-                ),
-                ListTile(
-                  contentPadding: const EdgeInsets.all(0),
-                  leading: ClipRRect(
-                      borderRadius: BorderRadius.circular(50),
-                      child: Image.asset(
-                        'images/mamat.jpeg',
-                        fit: BoxFit.cover,
-                        width: 40,
-                        height: 40,
-                        errorBuilder: (context, error, stackTrace) {
-                          return const Icon(
-                            Icons.person,
-                            size: 40,
-                          );
-                        },
-                      )),
-                  title: const Text("Rizky Rahmat Nugraha"),
-                  subtitle: const Text("instagram: @rrahmatn_"),
-                  // onTap: () async {
-                  //   var url = "https://www.instagram.com/rrahmatn_";
-                  //   if (await canLaunchUrlString(url)) {
-                  //     await launchUrlString(url);
-                  //   } else {
-                  //     throw 'Could not launch $url';
-                  //   }
-                  // },
-                )
-              ],
+                      ),
+                    ),
+                    title: const Text(
+                      'Zawilhikam Mohammad, S. Kom',
+                      style:
+                          TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                    ),
+                    subtitle: const Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Project Manager', style: TextStyle(fontSize: 13)),
+                        Text('Instagram: @zawilhikam_'),
+                      ],
+                    ),
+                  ),
+                  ListTile(
+                    contentPadding: const EdgeInsets.all(0),
+                    leading: ClipRRect(
+                        borderRadius: BorderRadius.circular(50),
+                        child: Image.asset(
+                          'images/shabiq.jpeg',
+                          fit: BoxFit.cover,
+                          width: 40,
+                          height: 40,
+                          errorBuilder: (context, error, stackTrace) {
+                            return const Icon(
+                              Icons.person,
+                              size: 40,
+                            );
+                          },
+                        )),
+                    title: const Text(
+                      'Shabiq Ghazi Arkaan',
+                      style:
+                          TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                    ),
+                    subtitle: const Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Backend Developer',
+                            style: TextStyle(fontSize: 13)),
+                        Text('Instagram: @shabiqghazi'),
+                      ],
+                    ),
+                  ),
+                  ListTile(
+                    contentPadding: const EdgeInsets.all(0),
+                    leading: ClipRRect(
+                        borderRadius: BorderRadius.circular(50),
+                        child: Image.asset(
+                          'images/yoss.jpeg',
+                          fit: BoxFit.cover,
+                          width: 40,
+                          height: 40,
+                          errorBuilder: (context, error, stackTrace) {
+                            return const Icon(
+                              Icons.person,
+                              size: 40,
+                            );
+                          },
+                        )),
+                    title: const Text(
+                      'Yoss Sagita Ananto',
+                      style:
+                          TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                    ),
+                    subtitle: const Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Frontend Developer',
+                            style: TextStyle(fontSize: 13)),
+                        Text('Instagram: @yossananto'),
+                      ],
+                    ),
+                  ),
+                  ListTile(
+                    contentPadding: const EdgeInsets.all(0),
+                    leading: ClipRRect(
+                        borderRadius: BorderRadius.circular(50),
+                        child: Image.asset(
+                          'images/mamat.jpeg',
+                          fit: BoxFit.cover,
+                          width: 40,
+                          height: 40,
+                          errorBuilder: (context, error, stackTrace) {
+                            return const Icon(
+                              Icons.person,
+                              size: 40,
+                            );
+                          },
+                        )),
+                    title: const Text(
+                      'Rizky Rahmat Nugraha',
+                      style:
+                          TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                    ),
+                    subtitle: const Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Frontend Developer',
+                            style: TextStyle(fontSize: 13)),
+                        Text('Instagram: @rrahmatn_'),
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
-          const Expanded(child: Divider()),
+          const Divider(),
           const ListTile(
-            title: Text("Versi Aplikasi"),
-            subtitle: Text("1.0.0"),
+            title: Text('Versi Aplikasi'),
+            subtitle: Text('1.0.0'),
           ),
           const Padding(
             padding: EdgeInsets.symmetric(vertical: 10),
             child: Center(
-                child: Text(
-              'Copyright Ⓒ 2024 Andromeda Teknologi',
-              style: TextStyle(fontSize: 13),
-            )),
+              child: Text(
+                'Copyright Ⓒ 2024 Andromeda Teknologi',
+                style: TextStyle(fontSize: 13),
+              ),
+            ),
           ),
         ],
       ),

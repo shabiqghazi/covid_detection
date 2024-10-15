@@ -183,10 +183,11 @@ class _LoginState extends State<Login> {
                                 onPressed: () async {
                                   try {
                                     await _authServices.signInWithGoogle();
+                                    if (!context.mounted) return;
                                     Navigator.of(context)
                                         .pushReplacementNamed('/home');
                                   } catch (e) {
-                                    print(e);
+                                    rethrow;
                                   }
                                 },
                                 style: ElevatedButton.styleFrom(

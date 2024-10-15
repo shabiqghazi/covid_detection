@@ -95,7 +95,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
         _currentLocation = GeoPoint(position.latitude, position.longitude);
       });
     } catch (e) {
-      print('Gagal mendapatkan lokasi: $e');
+      rethrow;
     }
   }
 
@@ -124,9 +124,9 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                 padding: const EdgeInsets.only(right: 10),
                 child: PopupMenuButton<String>(
                   onSelected: (value) {
-                    // Gunakan Future.microtask untuk menangani kode asinkron
                     Future.microtask(() async {
                       if (value == 'profile') {
+                        if (!context.mounted) return;
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -138,6 +138,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                       } else if (value == 'logout') {
                         _confirmLogout(context);
                       } else if (value == 'about') {
+                        if (!context.mounted) return;
                         Navigator.pushNamed(context, '/about');
                       }
                     });

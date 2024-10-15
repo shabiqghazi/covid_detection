@@ -173,12 +173,18 @@ class _ChatroomState extends State<Chatroom> {
           },
           icon: const Icon(Icons.arrow_back),
         ),
-        title: Text(
-          widget.hospital.name!,
-          overflow: TextOverflow.ellipsis,
-          maxLines: 1,
-          style: const TextStyle(
-            fontSize: 15,
+        title: Tooltip(
+          message: widget.hospital.name!,
+          child: GestureDetector(
+            onTap: () {},
+            child: Text(
+              widget.hospital.name!,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+              style: const TextStyle(
+                fontSize: 15,
+              ),
+            ),
           ),
         ),
         actions: [
@@ -186,10 +192,12 @@ class _ChatroomState extends State<Chatroom> {
               ? Padding(
                   padding: const EdgeInsets.only(right: 13),
                   child: Text(
-                    report!.status,
-                    style: const TextStyle(
+                    report!.status == 'a'
+                        ? 'Menunggu Persetujuan'
+                        : 'Bantuan Diterima',
+                    style: TextStyle(
                       fontSize: 12,
-                      color: Colors.red,
+                      color: report!.status == 'a' ? Colors.blue : Colors.green,
                       fontWeight: FontWeight.w600,
                     ),
                   ),

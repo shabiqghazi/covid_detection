@@ -41,8 +41,7 @@ class AuthServices {
 
       return userCredential.user;
     } catch (e) {
-      print(e);
-      throw e;
+      rethrow;
     }
   }
 
@@ -72,7 +71,8 @@ class AuthServices {
             context, 'Email telah terdaftar. Gunakan email lain!');
       }
     } catch (e) {
-      print(e);
+      showSnackbarMessage(
+          context, 'Gagal membuat akun periksa kembali internet anda!');
     }
   }
 
@@ -101,7 +101,8 @@ class AuthServices {
         showSnackbarMessage(context, 'Email atau password salah.');
       }
     } catch (e) {
-      print(e);
+      showSnackbarMessage(
+          context, 'Login gagal periksa kembali internet anda!');
     }
   }
 
@@ -112,7 +113,8 @@ class AuthServices {
       if (!context.mounted) return;
       Navigator.pushReplacementNamed(context, '/login');
     } catch (e) {
-      print('Error signing out: $e');
+      showSnackbarMessage(
+          context, 'Logout gagal periksa kembali internet anda!');
     }
   }
 }

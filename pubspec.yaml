@@ -38,6 +38,9 @@ flutter:
     - images/mic_permission.jpeg
     - images/loc_permission.jpeg
     - images/logo.png
+    - images/icon.png
+    - images/armein.png
+    - images/zawil.jpeg
     - images/yoss.jpeg
     - images/shabiq.jpeg
     - images/mamat.jpeg

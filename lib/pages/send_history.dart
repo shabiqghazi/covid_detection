@@ -126,6 +126,7 @@ class _SendHistoryState extends State<SendHistory> {
                                   widget.userId,
                                 );
 
+                                if (!context.mounted) return;
                                 Navigator.pop(context);
                               },
                               child: const Icon(

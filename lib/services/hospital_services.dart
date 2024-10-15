@@ -27,9 +27,7 @@ class HospitalServices {
       }).toList();
       return allData;
     } catch (e) {
-      print("Error connecting to Firestore: $e");
+      return [];
     }
-    // Get data from docs and convert them to List
-    return [];
   }
 }

@@ -61,7 +61,7 @@ class _RiwayatState extends State<Riwayat> {
         path: '$path/audio.wav',
       );
     } catch (e) {
-      print('Gagal memulai perekaman: $e');
+      rethrow;
     }
   }
 
@@ -76,13 +76,13 @@ class _RiwayatState extends State<Riwayat> {
 
       await _uploadRecording(_audioPath);
     } catch (e) {
-      print('Gagal menghentikan perekaman: $e');
+      rethrow;
     }
   }
 
   // Mengirim file hasil rekaman
   Future<void> _uploadRecording(String? audioPath) async {
-    var url = Uri.parse('http://192.168.1.41:5000/get_signal');
+    var url = Uri.parse('http://103.196.154.240:5000/get_signal');
     var request = http.MultipartRequest('POST', url);
     final file = File(audioPath!);
 
@@ -350,13 +350,18 @@ class _RiwayatState extends State<Riwayat> {
                   : Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(50),
-                        color: Colors.grey,
                       ),
-                      child: const Icon(
-                        Icons.mic_off,
-                        size: 30,
-                        color: Colors.white,
+                      child: const Center(
+                        child: CircularProgressIndicator(
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(Colors.blue),
+                        ),
                       ),
+                      // child: const Icon(
+                      //   Icons.mic_off,
+                      //   size: 30,
+                      //   color: Colors.white,
+                      // ),
                     ),
         ),
       ),
