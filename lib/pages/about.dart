@@ -124,7 +124,7 @@ class About extends StatelessWidget {
                   ),
                   ListTile(
                     onTap: () => launchCustomUrl(
-                        'instagram://user?username=zawilhikam_'),
+                        'https://www.instagram.com/zawilhikam_/'),
                     contentPadding: const EdgeInsets.all(0),
                     leading: ClipRRect(
                       borderRadius: BorderRadius.circular(50),
@@ -155,21 +155,24 @@ class About extends StatelessWidget {
                     ),
                   ),
                   ListTile(
+                    onTap: () => launchCustomUrl(
+                        'https://www.instagram.com/shabiqghazi/'),
                     contentPadding: const EdgeInsets.all(0),
                     leading: ClipRRect(
-                        borderRadius: BorderRadius.circular(50),
-                        child: Image.asset(
-                          'images/shabiq.jpeg',
-                          fit: BoxFit.cover,
-                          width: 40,
-                          height: 40,
-                          errorBuilder: (context, error, stackTrace) {
-                            return const Icon(
-                              Icons.person,
-                              size: 40,
-                            );
-                          },
-                        )),
+                      borderRadius: BorderRadius.circular(50),
+                      child: Image.asset(
+                        'images/shabiq.jpeg',
+                        fit: BoxFit.cover,
+                        width: 40,
+                        height: 40,
+                        errorBuilder: (context, error, stackTrace) {
+                          return const Icon(
+                            Icons.person,
+                            size: 40,
+                          );
+                        },
+                      ),
+                    ),
                     title: const Text(
                       'Shabiq Ghazi Arkaan',
                       style:
@@ -185,21 +188,24 @@ class About extends StatelessWidget {
                     ),
                   ),
                   ListTile(
+                    onTap: () => launchCustomUrl(
+                        'https://www.instagram.com/yossananto/'),
                     contentPadding: const EdgeInsets.all(0),
                     leading: ClipRRect(
-                        borderRadius: BorderRadius.circular(50),
-                        child: Image.asset(
-                          'images/yoss.jpeg',
-                          fit: BoxFit.cover,
-                          width: 40,
-                          height: 40,
-                          errorBuilder: (context, error, stackTrace) {
-                            return const Icon(
-                              Icons.person,
-                              size: 40,
-                            );
-                          },
-                        )),
+                      borderRadius: BorderRadius.circular(50),
+                      child: Image.asset(
+                        'images/yoss.jpeg',
+                        fit: BoxFit.cover,
+                        width: 40,
+                        height: 40,
+                        errorBuilder: (context, error, stackTrace) {
+                          return const Icon(
+                            Icons.person,
+                            size: 40,
+                          );
+                        },
+                      ),
+                    ),
                     title: const Text(
                       'Yoss Sagita Ananto',
                       style:
@@ -215,6 +221,8 @@ class About extends StatelessWidget {
                     ),
                   ),
                   ListTile(
+                    onTap: () =>
+                        launchCustomUrl('https://www.instagram.com/rrahmatn_/'),
                     contentPadding: const EdgeInsets.all(0),
                     leading: ClipRRect(
                         borderRadius: BorderRadius.circular(50),
